@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import { InterfaceCountryInfo } from "app/config/@interfaces/hook.interface";
+import { ICountryInfo } from "app/config/@interfaces/hook.interface";
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 
-type Props = { data: InterfaceCountryInfo[]; onChange: (e: string) => void };
+type Props = { data: ICountryInfo[]; onChange: (e: string) => void };
 
 export default function Select({ data, onChange }: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null);

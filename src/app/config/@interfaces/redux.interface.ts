@@ -1,4 +1,4 @@
-import { InterfaceArticle } from "./article.interface";
-export interface InterfaceMainState {
-  articles: InterfaceArticle[];
+import { IArticle } from "./article.interface";
+export interface IMainState {
+  articles: IArticle[];
 }

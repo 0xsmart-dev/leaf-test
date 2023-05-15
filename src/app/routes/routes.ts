@@ -1,9 +1,9 @@
-import { InterfaceRouteItem } from "app/config/@interfaces/route.interface";
+import { IRouteItem } from "app/config/@interfaces/route.interface";
 import Error404 from "app/pages/404";
 import Dashboard from "app/pages/dashboard";
 import Detail from "app/pages/detail";
 
-const userRoutes: InterfaceRouteItem[] = [
+const userRoutes: IRouteItem[] = [
   {
     text: "Shippers",
     url: "/shippers",

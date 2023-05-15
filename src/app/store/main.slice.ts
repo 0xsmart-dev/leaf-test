@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { InterfaceMainState } from "app/config/@interfaces/redux.interface";
+import { IMainState } from "app/config/@interfaces/redux.interface";
 
-const initialState: InterfaceMainState = {
+const initialState: IMainState = {
   articles: [],
 };
 

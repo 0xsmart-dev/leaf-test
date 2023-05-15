@@ -1,4 +1,4 @@
-import { InterfaceArticle } from "app/config/@interfaces/article.interface";
+import { IArticle } from "app/config/@interfaces/article.interface";
 import { getDateTime } from "app/utils/api";
 import { useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 const Detail = () => {
   const { id } = useParams<{ id: string }>();
   const articleInfo = useSelector((state: any) => {
-    return state.main.articles.find((article: InterfaceArticle) => {
+    return state.main.articles.find((article: IArticle) => {
       return article.id.toString() === id;
     });
   });

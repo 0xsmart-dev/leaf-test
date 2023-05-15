@@ -8,8 +8,8 @@ import {
 } from "@heroicons/react/24/outline";
 import Select from "app/components/Select";
 import { dataCountries } from "app/config/data/country.data";
-import { InterfaceCountryInfo } from "app/config/@interfaces/hook.interface";
-import { InterfaceArticle } from "app/config/@interfaces/article.interface";
+import { ICountryInfo } from "app/config/@interfaces/hook.interface";
+import { IArticle } from "app/config/@interfaces/article.interface";
 import getCountryInfo, { checkSearch, getDateTime } from "app/utils/api";
 import { setArticles } from "app/store/main.slice";
 import { LoadingContext } from "app/components/LoadingProvider";
@@ -18,7 +18,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { isLoading, setLoading } = useContext(LoadingContext);
   const articles = useSelector((state: any) => state.main.articles);
-  const [countries, setCountries] = useState([] as InterfaceCountryInfo[]);
+  const [countries, setCountries] = useState([] as ICountryInfo[]);
   const [searchIndex, setSearchIndex] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
 
@@ -26,21 +26,26 @@ const Dashboard = () => {
     const promises = dataCountries.map((countryCode: string) => {
       return getCountryInfo(countryCode);
     });
-    const result = (await Promise.all(promises)) as InterfaceCountryInfo[];
+    const result = (await Promise.all(promises)) as ICountryInfo[];
     setCountries(result);
   };
   const fetchArticles = async () => {
     setLoading(true);
-    const result: any = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=${selectedCountry}&apiKey=c7348f4c6166429486781a679f905ebe`
-    );
-    dispatch(
-      setArticles(
-        result.data.articles.map((item: InterfaceArticle, id: number) => {
-          return { ...item, id };
-        }) as InterfaceArticle[]
-      )
-    );
+    try {
+      const result: any = await axios.get(
+        `https://newsapi.org/v2/top-headlines?country=${selectedCountry}&apiKey=c7348f4c6166429486781a679f905ebe`
+      );
+      dispatch(
+        setArticles(
+          result.data.articles.map((item: IArticle, id: number) => {
+            return { ...item, id };
+          }) as IArticle[]
+        )
+      );
+    } catch (error: any) {
+      console.log(error);
+    }
+
     setLoading(false);
   };
 
@@ -81,7 +86,7 @@ const Dashboard = () => {
       </div>
       <div className="flex gap-2 mt-2 flex-wrap mx-auto min-[432px]:w-[400px] min-[840px]:w-[808px] min-[1248px]:w-[1216px] min-[1656px]:w-[1624px]">
         {articles
-          .filter((article: InterfaceArticle) => {
+          .filter((article: IArticle) => {
             return (
               checkSearch(article.title, searchIndex) ||
               checkSearch(article.description, searchIndex) ||
@@ -90,17 +95,28 @@ const Dashboard = () => {
               checkSearch(article.source.name, searchIndex)
             );
           })
-          .map((article: InterfaceArticle) => {
+          .map((article: IArticle) => {
             return (
               <div
                 key={`article-content-${article.id}`}
                 className="w-full max-w-[400px] rounded-md bg-green-100 dark:bg-neutral-950/60 shadow-md"
               >
                 <div className="p-4 relative h-full flex flex-col">
-                  <img
-                    src={article.urlToImage}
-                    className="aspect-video rounded-md w-full bg-green-300 dark:bg-neutral-900"
-                  />
+                  <div className="w-full aspect-video overflow-hidden rounded-md">
+                    <Link to={`/dashboard/detail/${article.id}`}>
+                      {article.id === null ? (
+                        <img
+                          src={"/assets/mock.png"}
+                          className="rounded-md w-full h-full bg-green-300 dark:bg-neutral-900 hover:scale-125 object-cover transition duration-500 ease-in-out"
+                        />
+                      ) : (
+                        <img
+                          src={article.urlToImage}
+                          className="rounded-md w-full h-full bg-green-300 dark:bg-neutral-900 hover:scale-125 object-cover transition duration-500 ease-in-out"
+                        />
+                      )}
+                    </Link>
+                  </div>
                   <div className="absolute top-6 left-6 rounded-full bg-green-200/80 dark:bg-neutral-950/80 text-xs px-2 py-1">
                     {article.source.name}
                   </div>

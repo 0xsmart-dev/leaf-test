@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { InterfaceDarkMode } from "app/config/@interfaces/hook.interface";
+import { IDarkMode } from "app/config/@interfaces/hook.interface";
 
-export default function useDarkMode(): InterfaceDarkMode {
+export default function useDarkMode(): IDarkMode {
   const [darkModeEnabled, setDarkModeEnabled] = useState(true);
 
   useEffect(() => {

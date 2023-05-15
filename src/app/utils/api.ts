@@ -1,8 +1,8 @@
-import { InterfaceCountryInfo } from "app/config/@interfaces/hook.interface";
+import { ICountryInfo } from "app/config/@interfaces/hook.interface";
 
 export default async function getCountryInfo(
   countryCode: string
-): Promise<InterfaceCountryInfo> {
+): Promise<ICountryInfo> {
   const apiUrl = `https://restcountries.com/v2/alpha/${countryCode}`;
   const result = await fetch(apiUrl).then((response) => response.json());
   const name = result.name;

@@ -1,8 +1,8 @@
-export interface InterfaceDarkMode {
+export interface IDarkMode {
   darkModeEnabled: boolean;
   toggleMode: () => void;
 }
-export interface InterfaceCountryInfo {
+export interface ICountryInfo {
   code: string;
   name: string;
   flag: string;
