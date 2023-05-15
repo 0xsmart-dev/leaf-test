@@ -104,7 +104,7 @@ const Dashboard = () => {
                 <div className="p-4 relative h-full flex flex-col">
                   <div className="w-full aspect-video overflow-hidden rounded-md">
                     <Link to={`/dashboard/detail/${article.id}`}>
-                      {article.id === null ? (
+                      {article.urlToImage === null ? (
                         <img
                           src={"/assets/mock.png"}
                           className="rounded-md w-full h-full bg-green-300 dark:bg-neutral-900 hover:scale-125 object-cover transition duration-500 ease-in-out"
