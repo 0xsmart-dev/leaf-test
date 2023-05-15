@@ -11,7 +11,6 @@ import { dataCountries } from "app/config/data/country.data";
 import { InterfaceCountryInfo } from "app/config/@interfaces/hook.interface";
 import { InterfaceArticle } from "app/config/@interfaces/article.interface";
 import getCountryInfo, { checkSearch, getDateTime } from "app/utils/api";
-import { mock } from "app/config/data/country.data";
 import { setArticles } from "app/store/main.slice";
 import { LoadingContext } from "app/components/LoadingProvider";
 
@@ -32,17 +31,16 @@ const Dashboard = () => {
   };
   const fetchArticles = async () => {
     setLoading(true);
+    const result: any = await axios.get(
+      `https://newsapi.org/v2/top-headlines?country=${selectedCountry}&apiKey=c7348f4c6166429486781a679f905ebe`
+    );
     dispatch(
       setArticles(
-        mock.map((item, id) => {
+        result.data.articles.map((item: InterfaceArticle, id: number) => {
           return { ...item, id };
         }) as InterfaceArticle[]
       )
     );
-    // const result = await axios.get(
-    //   `https://newsapi.org/v2/top-headlines?country=${selectedCountry}&apiKey=c7348f4c6166429486781a679f905ebe`
-    // );
-    // setArticles(result.data.articles as InterfaceArticle[]);
     setLoading(false);
   };
 
