@@ -6,11 +6,8 @@ import {
   ArrowTopRightOnSquareIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import Select from "app/components/Select";
-import { dataCountries } from "app/config/data/country.data";
-import { ICountryInfo } from "app/config/@interfaces/hook.interface";
 import { IArticle } from "app/config/@interfaces/article.interface";
-import getCountryInfo, { checkSearch, getDateTime } from "app/utils/api";
+import { checkSearch, getDateTime } from "app/utils/api";
 import { setArticles } from "app/store/main.slice";
 import { LoadingContext } from "app/components/LoadingProvider";
 
@@ -18,17 +15,9 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { isLoading, setLoading } = useContext(LoadingContext);
   const articles = useSelector((state: any) => state.main.articles);
-  const [countries, setCountries] = useState([] as ICountryInfo[]);
   const [searchIndex, setSearchIndex] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("us");
 
-  const fetchData = async () => {
-    const promises = dataCountries.map((countryCode: string) => {
-      return getCountryInfo(countryCode);
-    });
-    const result = (await Promise.all(promises)) as ICountryInfo[];
-    setCountries(result);
-  };
   const fetchArticles = async () => {
     setLoading(true);
     try {
@@ -50,26 +39,13 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetchData();
-    return () => {};
-  }, []);
-
-  useEffect(() => {
-    if (selectedCountry.length !== 2) return;
     fetchArticles();
     return () => {};
   }, [selectedCountry]);
 
   return (
     <main>
-      <div className="flex flex-col gap-2 md:flex-row-reverse max-w-[1624px] mx-auto">
-        <Select
-          data={countries}
-          onChange={(e: string) => {
-            setSelectedCountry(e);
-          }}
-        />
+      <div className="flex gap-2 max-w-[1624px] mx-auto">
         <div className="relative w-full">
           <input
             value={searchIndex}
@@ -81,6 +57,28 @@ const Dashboard = () => {
           />
           <div className="absolute right-0 top-0 flex items-center justify-center h-full mr-3">
             <MagnifyingGlassIcon className=" w-5 h-5" />
+          </div>
+        </div>
+        <div className="flex items-center gap-1 flex-none bg-green-200 dark:bg-neutral-950/50 px-1 rounded-md">
+          <div
+            className={`cursor-pointer py-2 px-3 rounded-md ${
+              selectedCountry === "gb" && " bg-green-300 dark:bg-neutral-900"
+            }`}
+            onClick={() => {
+              setSelectedCountry("gb");
+            }}
+          >
+            GB
+          </div>
+          <div
+            className={`cursor-pointer py-2 px-3 rounded-md ${
+              selectedCountry === "us" && " bg-green-300 dark:bg-neutral-900"
+            }`}
+            onClick={() => {
+              setSelectedCountry("us");
+            }}
+          >
+            US
           </div>
         </div>
       </div>
